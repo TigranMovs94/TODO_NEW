@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="532.0" prefWidth="499.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.todo_new.Todolist">
+   <children>
+      <ListView fx:id="listView" layoutX="14.0" layoutY="132.0" prefHeight="385.0" prefWidth="469.0" style="-fx-border-color: #4cad2d;" />
+      <TextField fx:id="todo" layoutX="14.0" layoutY="60.0" prefHeight="46.0" prefWidth="212.0" promptText="Add a todo" style="-fx-border-color: #4cad2d;" />
+      <Button layoutX="14.0" layoutY="21.0" mnemonicParsing="false" onAction="#onAddButton" prefHeight="30.0" prefWidth="95.0" style="-fx-background-color: #ffffff; -fx-border-color: #4cad2d; -fx-border-width: 2;" text="Add">
+         <font>
+            <Font name="Serif Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button layoutX="131.0" layoutY="21.0" mnemonicParsing="false" onAction="#deleteButton" prefHeight="30.0" prefWidth="95.0" style="-fx-background-color: #ffffff; -fx-border-color: #4cad2d; -fx-border-width: 2;" text="Delete">
+         <font>
+            <Font name="Serif Bold" size="14.0" />
+         </font>
+      </Button>
+      <Button layoutX="390.0" layoutY="21.0" mnemonicParsing="false" onAction="#switchAfterLogin" prefHeight="30.0" prefWidth="95.0" style="-fx-background-color: #ffffff; -fx-border-color: #4cad2d; -fx-border-width: 2;" text="&lt;-Back">
+         <font>
+            <Font name="Serif Bold" size="14.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
