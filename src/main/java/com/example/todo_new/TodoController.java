@@ -12,15 +12,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.sql.DriverManager;
+import java.util.Objects;
 
 public class TodoController {
-    private static Connection conn;
 
-    private Stage stage;
     private  Scene scene;
     private Parent root;
     @FXML
@@ -30,9 +28,6 @@ public class TodoController {
     public TextField userNameField;
     @FXML
     public TextField passwordField;
-
-
-
 
 
     @FXML
@@ -48,7 +43,7 @@ public class TodoController {
             String pass = passwordField.getText();
 
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/todo", "root1", "Canada2019$#");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/todo", "root1", "Canada2019$#");
             Statement st = conn.createStatement();
 
             String sql = "SELECT * FROM users WHERE username='" + text + "' AND password='" + pass + "'";
@@ -74,8 +69,6 @@ public class TodoController {
 
         return 0;
     }
-
-
 
     public void switchToScene2(ActionEvent event) throws IOException {
 
@@ -106,7 +99,7 @@ public class TodoController {
     public void signUp(ActionEvent event) throws IOException {
 
 
-            Parent root = FXMLLoader.load(getClass().getResource("signUp.fxml"));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("signUp.fxml")));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);
