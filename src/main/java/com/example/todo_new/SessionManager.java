@@ -8,7 +8,7 @@ public class SessionManager {
     private static SessionManager instance;
     private Map<String, String> sessionMap;
 
-    private SessionManager() {
+    SessionManager() {
         sessionMap = new HashMap<>();
     }
 

@@ -26,6 +26,8 @@ import java.util.ResourceBundle;
 
 public class TodoController implements Initializable {
 
+    public static String username = "";
+
     private  Scene scene;
     private Parent root;
     @FXML
@@ -41,7 +43,7 @@ public class TodoController implements Initializable {
 
 
 
-    String sessionToken = generateSessionToken();
+    String sessionToken = " ";
 
 
     public int login(){
@@ -58,12 +60,8 @@ public class TodoController implements Initializable {
             ResultSet rs = st.executeQuery(sql);
 
 
-
-            // Save the session token to the database
-            saveSessionToDatabase(userNameField.getText(), sessionToken);
-
-
             if (rs.next()) {
+                AfterLogin.setUserName(userNameField.getText());
 
                 conn.close();
                 return 1;
@@ -85,13 +83,18 @@ public class TodoController implements Initializable {
 
         if(login()==1){
 
+
             Parent root = FXMLLoader.load(getClass().getResource("afterLogin.fxml"));
+             username = userNameField.getText();
+             sessionToken = generateSessionToken();
+            // Save the session token to the database
+             saveSessionToDatabase(userNameField.getText(), sessionToken);
+
 
             Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
             scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
-
 
         }
         else {
@@ -104,9 +107,6 @@ public class TodoController implements Initializable {
 
             });
         }
-
-
-
 
 
 
@@ -125,8 +125,11 @@ public class TodoController implements Initializable {
         // Generate a unique session token using a random number generator
         Random random = new Random();
         long token = Math.abs(random.nextLong());
+
         return Long.toString(token, 16);
     }
+
+
 
     private void saveSessionToDatabase(String username, String sessionToken) {
         // Insert a new record into the sessions table
@@ -146,6 +149,7 @@ public class TodoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
        setImage();
     }
 
@@ -156,4 +160,14 @@ public class TodoController implements Initializable {
         Image image = new Image(file.toURI().toString());
         introImage.setImage(image);
     }
+
+
+    public static String getUsername(){
+        return username;
+    }
+
+    public String getGeneratedToken(){
+        return sessionToken;
+    }
+
 }

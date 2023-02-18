@@ -21,8 +21,11 @@ public class AfterLogin implements Initializable {
    @FXML
    public Text greetingText;
 
-    @FXML
-    public TextField userNameField;
+ public static String userName = " ";
+
+    public static void setUserName(String userName) {
+        AfterLogin.userName = userName;
+    }
 
     public void switchToScene1(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("hello-view.fxml"));
@@ -44,54 +47,10 @@ public class AfterLogin implements Initializable {
 
 
 
-
-
-    public String getCurrentLoggedInUser(String sessionToken) throws SQLException {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        String username = null;
-
-        try {
-            DBcon connect = new DBcon();
-            conn = connect.connect("todo");
-            String sql = "SELECT username FROM sessions WHERE token = ?";
-            stmt = conn.prepareStatement(sql);
-            stmt.setString(1, sessionToken);
-            rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                username = rs.getString("username");
-            }
-        } catch (SQLException e) {
-            // handle exception
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
-        }
-
-        return username;
-    }
-
-
-
-
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        TodoController controller = new TodoController();
-        try {
-            greetingText.setText("Hello "+getCurrentLoggedInUser(controller.sessionToken));
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
+        greetingText.setText("Hello, " + userName.toUpperCase()+"!");
+
     }
 }
