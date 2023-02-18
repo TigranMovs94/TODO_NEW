@@ -63,8 +63,9 @@ public class Todolist implements Initializable {
 
 
         Platform.runLater(() -> {
-            listView.getItems().add(refreshListView());
+            refreshListView();
         });
+        todo.clear();
     }
 
 
@@ -92,7 +93,7 @@ public class Todolist implements Initializable {
         }
 
         Platform.runLater(() -> {
-            listView.getItems().add(refreshListView());
+            refreshListView();
         });
         todo.clear();
     }
@@ -111,47 +112,22 @@ public class Todolist implements Initializable {
 
     }
 
-    public void display(){
-        try{
-            DBcon connect = new DBcon();
-            conn = connect.connect("todo");
-
-            Statement st = conn.createStatement();
-            String query = "SELECT title FROM todo";
-            ResultSet rs = st.executeQuery(query);
-
-            while (rs.next()){
-                String title = rs.getString("title");
-                listView.getItems().add(title);
-            }
-            rs.close();
-            st.close();
-            conn.close();
-        }
-        catch (Exception e){
-            System.out.println("Error: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-    }
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        display();
+        refreshListView();
     }
 
 
-    private String refreshListView() {
-        // Clear the previous list before adding new items
-        listView.getItems().clear();
-
-
+    private void refreshListView() {
+         listView.getItems().clear();
         // Query the database for new items and add them to the list
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/todo",
-                "root1", "Canada2019$#");
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT title FROM todo")) {
+        try {
+            DBcon connect = new DBcon();
+            Connection conn = connect.connect("todo");
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT title FROM todo");
 
             while (rs.next()) {
                 String name = rs.getString("title");
@@ -163,12 +139,12 @@ public class Todolist implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        String str = listView.getItems()
-                .stream()
-                .filter(s -> !s.isEmpty()) // filter out empty strings
-                .collect(Collectors.joining());
 
 
-        return str.trim();
     }
+
+
+
+
+
 }
