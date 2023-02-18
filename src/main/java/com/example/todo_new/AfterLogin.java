@@ -8,9 +8,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
@@ -20,6 +23,9 @@ public class AfterLogin implements Initializable {
 
    @FXML
    public Text greetingText;
+
+   @FXML
+   public ImageView afterLoginImage;
 
  public static String userName = " ";
 
@@ -52,5 +58,14 @@ public class AfterLogin implements Initializable {
 
         greetingText.setText("Hello, " + userName.toUpperCase()+"!");
 
+        setAfterLoginImage();
+
+    }
+
+
+    public void setAfterLoginImage(){
+        File file = new File("C:\\Users\\Tigran\\IdeaProjects\\demo1\\TODO_NEW1\\src\\main\\java\\com\\example\\todo_new\\images.png");
+        Image image = new Image(file.toURI().toString());
+        afterLoginImage.setImage(image);
     }
 }
