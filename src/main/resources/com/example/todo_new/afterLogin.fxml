@@ -14,7 +14,7 @@
             <Font name="SansSerif Bold" size="13.0" />
          </font>
       </Button>
-      <Text fx:id="greetingText" layoutX="25.0" layoutY="39.0" onDragDetected="#getUsername" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello," wrappingWidth="143.0">
+      <Text fx:id="greetingText" layoutX="25.0" layoutY="39.0"  strokeType="OUTSIDE" strokeWidth="0.0" text="Hello," wrappingWidth="143.0">
          <font>
             <Font name="Serif Italic" size="18.0" />
          </font>
