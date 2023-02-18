@@ -30,10 +30,6 @@ public class TodoController {
     public TextField passwordField;
 
 
-    @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
-    }
 
 
     public int login(){
@@ -42,8 +38,8 @@ public class TodoController {
             String text = userNameField.getText();
             String pass = passwordField.getText();
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/todo", "root1", "Canada2019$#");
+            DBcon connect = new DBcon();
+            Connection conn = connect.connect("todo");
             Statement st = conn.createStatement();
 
             String sql = "SELECT * FROM users WHERE username='" + text + "' AND password='" + pass + "'";

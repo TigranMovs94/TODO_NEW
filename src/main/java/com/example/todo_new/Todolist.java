@@ -1,9 +1,6 @@
 package com.example.todo_new;
 
-import javafx.beans.Observable;
-import javafx.beans.value.ObservableListValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,16 +8,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.sql.DriverManager;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class Todolist implements Initializable {
 
@@ -39,63 +35,69 @@ public class Todolist implements Initializable {
     }
 
 
-    public void onAddButton(){
+    public void onAddButton() {
 
         String insertedText = todo.getText();
 
 
-        if(!insertedText.isBlank()){
-            try{
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/todo", "root1", "Canada2019$#");
+        if (!insertedText.isBlank()) {
+            try {
+                DBcon connect = new DBcon();
+                conn = connect.connect("todo");
 
                 Statement st = conn.createStatement();
-                String query = "INSERT INTO todo (title) values('"+insertedText+"')";
+                String query = "INSERT INTO todo (title) values('" + insertedText + "')";
                 st.executeUpdate(query);
-                listView.refresh();
+
 
                 st.close();
                 conn.close();
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             System.out.println("try something new ");
         }
+
+
+
+        Platform.runLater(() -> {
+            listView.getItems().add(refreshListView());
+        });
     }
 
-    public void deleteButton(){
+
+    public void deleteButton() {
         String todoForDeletion = listView.getSelectionModel().selectedItemProperty().getValue();
         System.out.println(todoForDeletion);
-        if(todoForDeletion!=null){
-            try{
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/todo", "root1", "Canada2019$#");
+        if (todoForDeletion != null) {
+            try {
+                DBcon connect = new DBcon();
+                conn = connect.connect("todo");
 
                 Statement st = conn.createStatement();
-                String query = "DELETE FROM todo WHERE title = '"+todoForDeletion+"'";
+                String query = "DELETE FROM todo WHERE title = '" + todoForDeletion + "'";
                 st.executeUpdate(query);
-                listView.refresh();
 
                 st.close();
                 conn.close();
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
                 e.printStackTrace();
             }
 
-        }
-        else {
+        } else {
             System.out.println("please select something");
         }
 
-
-
+        Platform.runLater(() -> {
+            listView.getItems().add(refreshListView());
+        });
+        todo.clear();
     }
+
+
 
 
 
@@ -109,11 +111,10 @@ public class Todolist implements Initializable {
 
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void display(){
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/todo", "root1", "Canada2019$#");
+            DBcon connect = new DBcon();
+            conn = connect.connect("todo");
 
             Statement st = conn.createStatement();
             String query = "SELECT title FROM todo";
@@ -132,7 +133,42 @@ public class Todolist implements Initializable {
             e.printStackTrace();
         }
 
+    }
 
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        display();
+    }
+
+
+    private String refreshListView() {
+        // Clear the previous list before adding new items
+        listView.getItems().clear();
+
+
+        // Query the database for new items and add them to the list
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/todo",
+                "root1", "Canada2019$#");
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT title FROM todo")) {
+
+            while (rs.next()) {
+                String name = rs.getString("title");
+                // Add the new item to the list view
+                Platform.runLater(() -> {
+                    listView.getItems().add(name);
+                });
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        String str = listView.getItems()
+                .stream()
+                .filter(s -> !s.isEmpty()) // filter out empty strings
+                .collect(Collectors.joining());
+
+
+        return str.trim();
     }
 }

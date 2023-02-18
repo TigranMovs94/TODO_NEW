@@ -11,14 +11,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.controlsfx.control.action.Action;
 
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 public class Signup {
 
     private static Connection conn;
@@ -48,8 +43,8 @@ public class Signup {
 
 
             if(!userName.isBlank() && !pass.isBlank()){
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/todo", "root1", "Canada2019$#");
+                DBcon connect = new DBcon();
+                conn = connect.connect("todo");
                 Statement st = conn.createStatement();
                 String sql = "INSERT INTO users (username, password, firstName, lastName) VALUES ('"+userName+"','"+pass+"','"+fName+"','"+lName+"')";
                 st.executeUpdate(sql);
@@ -82,8 +77,6 @@ public class Signup {
         } catch (SQLException e) {
             throw new RuntimeException(e);
 
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         }
 
 
