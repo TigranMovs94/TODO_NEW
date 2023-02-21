@@ -34,6 +34,7 @@ public class AfterLogin implements Initializable {
     }
 
     public void switchToScene1(ActionEvent event) throws IOException {
+        ButtonClickSound.setLogBtnClickingSound();
         Parent root = FXMLLoader.load(getClass().getResource("hello-view.fxml"));
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -43,6 +44,7 @@ public class AfterLogin implements Initializable {
     }
 
     public void switchTodo(ActionEvent event) throws IOException {
+        ButtonClickSound.setLogBtnClickingSound();
         Parent root = FXMLLoader.load(getClass().getResource("Todolist.fxml"));
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);

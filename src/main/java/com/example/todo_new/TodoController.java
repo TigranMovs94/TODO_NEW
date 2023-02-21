@@ -13,16 +13,17 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
-import java.sql.DriverManager;
 import java.util.Objects;
 import java.util.Random;
 import java.util.ResourceBundle;
+
+
+
 
 public class TodoController implements Initializable {
 
@@ -31,7 +32,7 @@ public class TodoController implements Initializable {
     private  Scene scene;
     private Parent root;
     @FXML
-    private Label welcomeText;
+    public Button logBtn;
 
     @FXML
     public TextField userNameField;
@@ -47,7 +48,9 @@ public class TodoController implements Initializable {
 
 
     public int login(){
+
         try {
+
 
             String text = userNameField.getText();
             String pass = passwordField.getText();
@@ -76,6 +79,7 @@ public class TodoController implements Initializable {
         }
 
 
+
         return 0;
     }
 
@@ -83,12 +87,12 @@ public class TodoController implements Initializable {
 
         if(login()==1){
 
-
+            ButtonClickSound.setLogBtnClickingSound();
             Parent root = FXMLLoader.load(getClass().getResource("afterLogin.fxml"));
              username = userNameField.getText();
-             sessionToken = generateSessionToken();
+             sessionToken = SessionManager.generateSessionToken();
             // Save the session token to the database
-             saveSessionToDatabase(userNameField.getText(), sessionToken);
+             SessionManager.saveSessionToDatabase(userNameField.getText(), sessionToken);
 
 
             Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -96,10 +100,13 @@ public class TodoController implements Initializable {
             stage.setScene(scene);
             stage.show();
 
+
+
         }
         else {
 
             Platform.runLater(() -> {
+                ButtonClickSound.setLogBtnClickingSound();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Fail!");
                 alert.setHeaderText("Enter a valid password or username!");
@@ -113,7 +120,7 @@ public class TodoController implements Initializable {
     }
     public void signUp(ActionEvent event) throws IOException {
 
-
+            ButtonClickSound.setLogBtnClickingSound();
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("signUp.fxml")));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root);
@@ -121,30 +128,10 @@ public class TodoController implements Initializable {
             stage.show();
     }
 
-    private String generateSessionToken() {
-        // Generate a unique session token using a random number generator
-        Random random = new Random();
-        long token = Math.abs(random.nextLong());
-
-        return Long.toString(token, 16);
-    }
 
 
 
-    private void saveSessionToDatabase(String username, String sessionToken) {
-        // Insert a new record into the sessions table
-        try {
-            DBcon connect = new DBcon();
-            Connection connection = connect.connect("todo");
-            PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO sessions (username, token, created_at) VALUES (?, ?, NOW())");
-            statement.setString(1, username);
-            statement.setString(2, sessionToken);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+
 
 
     @Override
@@ -160,6 +147,8 @@ public class TodoController implements Initializable {
         Image image = new Image(file.toURI().toString());
         introImage.setImage(image);
     }
+
+
 
 
     public static String getUsername(){

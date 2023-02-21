@@ -33,6 +33,8 @@ public class Signup {
 
     public void register() {
 
+        ButtonClickSound.setLogBtnClickingSound();
+
         try{
             String userName = userNameReg.getText();
             String pass = passReg.getText();
@@ -83,6 +85,7 @@ public class Signup {
     }
 
     public void switchToScene1(ActionEvent event) throws IOException {
+        ButtonClickSound.setLogBtnClickingSound();
         Parent root = FXMLLoader.load(getClass().getResource("hello-view.fxml"));
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);

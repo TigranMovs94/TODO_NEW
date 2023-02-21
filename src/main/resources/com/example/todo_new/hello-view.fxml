@@ -10,7 +10,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="459.0" prefWidth="302.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.todo_new.TodoController">
    <children>
-      <Button layoutX="37.0" layoutY="309.0" mnemonicParsing="false" onAction="#switchToScene2" prefHeight="37.0" prefWidth="226.0" style="-fx-background-color: #4cad2d;" styleClass="my-button" text="Login" textFill="#fcfcfc">
+      <Button layoutX="37.0" layoutY="309.0" mnemonicParsing="false" onAction="#switchToScene2" prefHeight="37.0" prefWidth="226.0" style="-fx-background-color: #4cad2d;" styleClass="my-button" text="Login" textFill="#fcfcfc" fx:id="logBtn">
          <font>
             <Font name="Serif Bold" size="14.0" />
          </font>

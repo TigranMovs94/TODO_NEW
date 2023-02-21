@@ -36,7 +36,7 @@ public class Todolist implements Initializable {
 
 
     public void onAddButton() {
-
+        ButtonClickSound.setLogBtnClickingSound();
         String insertedText = todo.getText();
 
 
@@ -70,6 +70,7 @@ public class Todolist implements Initializable {
 
 
     public void deleteButton() {
+        ButtonClickSound.setLogBtnClickingSound();
         String todoForDeletion = listView.getSelectionModel().selectedItemProperty().getValue();
         System.out.println(todoForDeletion);
         if (todoForDeletion != null) {
@@ -104,6 +105,7 @@ public class Todolist implements Initializable {
 
 
     public void switchAfterLogin(ActionEvent event) throws IOException {
+        ButtonClickSound.setLogBtnClickingSound();
         Parent root = FXMLLoader.load(getClass().getResource("afterLogin.fxml"));
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
