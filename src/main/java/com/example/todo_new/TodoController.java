@@ -30,7 +30,6 @@ public class TodoController implements Initializable {
     public static String username = "";
 
     private  Scene scene;
-    private Parent root;
     @FXML
     public Button logBtn;
 
@@ -42,6 +41,8 @@ public class TodoController implements Initializable {
     @FXML
     public ImageView introImage;
 
+    @FXML
+     public Button signupBtn;
 
 
     String sessionToken = " ";
@@ -137,7 +138,10 @@ public class TodoController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-       setImage();
+        setImage();
+        setStyle();
+
+
     }
 
 
@@ -155,8 +159,26 @@ public class TodoController implements Initializable {
         return username;
     }
 
-    public String getGeneratedToken(){
-        return sessionToken;
+    public void setStyle()  {
+
+      logBtn.setOnMouseEntered(e->{
+          logBtn.setStyle("-fx-background-color: #176404");
+              });
+
+        logBtn.setOnMouseExited(e -> {
+            logBtn.setStyle("-fx-background-color: #4cad2d; -fx-text-fill: #fffafa;");
+        });
+
+        //signup butotn
+        signupBtn.setOnMouseEntered(e->{
+            signupBtn.setStyle("-fx-background-color: #176404");
+        });
+
+        signupBtn.setOnMouseExited(e -> {
+            signupBtn.setStyle("-fx-background-color: #4cad2d; -fx-text-fill: #fffafa;");
+        });
     }
+
+
 
 }

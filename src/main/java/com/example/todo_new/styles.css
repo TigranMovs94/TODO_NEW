@@ -1,3 +1,9 @@
-.my-button:hover {
-    -fx-background-color: #c4c4c4;
+.loginButton{
+    -fx-background-color: #4cad2d;"
+}
+.loginButton:hover {
+
+    -fx-background-color: white;
+
+
 }
